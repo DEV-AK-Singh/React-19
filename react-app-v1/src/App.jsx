@@ -6,18 +6,21 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 
 function App() {
+  // let count = 0
+  // function increase() {
+  //   count = count + 1
+  //   console.log(count)
+  // }
+
   const [count, setCount] = useState(0)
 
   return (
     <>
       <div> 
         <Header/>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <h1>Counter : {count}</h1>
+        {/* <button onClick={increase}>Increase using variable</button> */}
+        <button onClick={()=>setCount(count+1)}>Increase using useState</button>
         <Footer/>
       </div>
     </>
