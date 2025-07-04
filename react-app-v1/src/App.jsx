@@ -5,6 +5,25 @@ import "./App.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
+const User = ({name, age, gender, color}) => {
+  return (
+    <div style={{border: `1px solid ${color}`, margin: '10px', padding: '20px'}}>
+      <h1>User card</h1>
+      <p>Name : {name}</p>
+      <p>Age : {age}</p>
+      <p>Gender : {gender}</p>
+    </div>
+  );
+};
+
+const ChildProps = ({children, color}) => {
+  return (
+    <div style={{border: `1px solid ${color}`, margin: '10px', padding: '20px'}}>
+      {children} 
+    </div>
+  );
+};
+
 function App() {
   // let count = 0
   // function increase() {
@@ -38,6 +57,16 @@ function App() {
         <button onClick={() => setCount(count + 1)}>
           Increase
         </button> */}
+
+        {/* Props Implementation    */}
+        {/* <User name="John Doe" age="20" gender="Male" color={"white"}/>
+        <User name="Jane Doe" age="22" gender="Female" color={"red"}/> */}
+
+        Children Implementation
+        <ChildProps color="red">
+          <User name="John Doe" age="20" gender="Male" color={"white"}/>
+          <User name="Jane Doe" age="22" gender="Female" color={"red"}/>
+        </ChildProps>
       </div>
     </>
   );
