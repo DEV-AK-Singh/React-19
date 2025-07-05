@@ -4,6 +4,7 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Main from "./components/Main";
 
 const User = ({name, age, gender, color}) => {
   return (
@@ -36,6 +37,8 @@ function App() {
   return (
     <>
       <div>
+        <Main/>
+
         {/* Component Implementation */}
         {/* <Header/> */}
         {/* <Footer/> */}
@@ -62,11 +65,11 @@ function App() {
         {/* <User name="John Doe" age="20" gender="Male" color={"white"}/>
         <User name="Jane Doe" age="22" gender="Female" color={"red"}/> */}
 
-        Children Implementation
+        {/* Children Implementation
         <ChildProps color="red">
           <User name="John Doe" age="20" gender="Male" color={"white"}/>
           <User name="Jane Doe" age="22" gender="Female" color={"red"}/>
-        </ChildProps>
+        </ChildProps> */}
       </div>
     </>
   );
