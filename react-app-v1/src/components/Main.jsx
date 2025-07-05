@@ -3,11 +3,13 @@ import ControlledComponents from "../features/ControlledComponents";
 import Loops from "../features/Loops";
 import UseEffect from "../features/UseEffect";
 import LifeCycle from "../features/LifeCycle";
+import Styling from "../features/Styling";
 
 export default function Main() {
   return(
     <>
-        <LifeCycle/>
+        <Styling/>
+        {/* <LifeCycle/> */}
         {/* <UseEffect/> */}
         {/* <Loops/> */}
         {/* <ControlledComponents/> */}
