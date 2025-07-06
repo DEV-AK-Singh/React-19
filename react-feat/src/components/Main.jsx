@@ -5,11 +5,13 @@ import UseEffect from "../features/UseEffect";
 import LifeCycle from "../features/LifeCycle";
 import Styling from "../features/Styling";
 import UseRef from "../features/UseRef";
+import FunctionAsProp from "../features/FunctionAsProp";
 
 export default function Main() {
   return(
     <>
-        <UseRef/>
+        <FunctionAsProp/>
+        {/* <UseRef/> */}
         {/* <Styling/> */}
         {/* <LifeCycle/> */}
         {/* <UseEffect/> */}
