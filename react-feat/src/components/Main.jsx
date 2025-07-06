@@ -9,11 +9,13 @@ import FunctionAsProp from "../features/FunctionAsProp";
 import ForwardRef from "../features/ForwardRef";
 import UseFormStatusHook from "../features/UseFormStatusHook";
 import UseTransitionHook from "../features/UseTransitionHook";
+import PureComponents from "../features/PureComponents";
 
 export default function Main() {
   return(
     <>
-        <UseTransitionHook/>
+        <PureComponents/>
+        {/* <UseTransitionHook/> */}
         {/* <UseFormStatusHook/> */}
         {/* <ForwardRef/> */}
         {/* <FunctionAsProp/> */}
