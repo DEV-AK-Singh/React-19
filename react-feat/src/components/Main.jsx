@@ -4,11 +4,13 @@ import Loops from "../features/Loops";
 import UseEffect from "../features/UseEffect";
 import LifeCycle from "../features/LifeCycle";
 import Styling from "../features/Styling";
+import UseRef from "../features/UseRef";
 
 export default function Main() {
   return(
     <>
-        <Styling/>
+        <UseRef/>
+        {/* <Styling/> */}
         {/* <LifeCycle/> */}
         {/* <UseEffect/> */}
         {/* <Loops/> */}
