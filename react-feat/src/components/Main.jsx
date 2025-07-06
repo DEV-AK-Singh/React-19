@@ -10,11 +10,13 @@ import ForwardRef from "../features/ForwardRef";
 import UseFormStatusHook from "../features/UseFormStatusHook";
 import UseTransitionHook from "../features/UseTransitionHook";
 import PureComponents from "../features/PureComponents";
+import DerivedState from "../features/DerivedState";
 
 export default function Main() {
   return(
     <>
-        <PureComponents/>
+        <DerivedState/>
+        {/* <PureComponents/> */}
         {/* <UseTransitionHook/> */}
         {/* <UseFormStatusHook/> */}
         {/* <ForwardRef/> */}
