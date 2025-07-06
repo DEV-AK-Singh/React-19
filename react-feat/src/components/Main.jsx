@@ -11,11 +11,13 @@ import UseFormStatusHook from "../features/UseFormStatusHook";
 import UseTransitionHook from "../features/UseTransitionHook";
 import PureComponents from "../features/PureComponents";
 import DerivedState from "../features/DerivedState";
+import UseActionStateHook from "../features/UseActionStateHook";
 
 export default function Main() {
   return(
     <>
-        <DerivedState/>
+        <UseActionStateHook/>
+        {/* <DerivedState/> */}
         {/* <PureComponents/> */}
         {/* <UseTransitionHook/> */}
         {/* <UseFormStatusHook/> */}
