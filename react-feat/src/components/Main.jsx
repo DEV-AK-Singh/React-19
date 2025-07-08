@@ -13,11 +13,13 @@ import PureComponents from "../features/PureComponents";
 import DerivedState from "../features/DerivedState";
 import UseActionStateHook from "../features/UseActionStateHook";
 import CustomHook from "../features/CustomHook";
+import ContextApi from "../features/ContextApi";
 
 export default function Main() {
   return(
     <>
-        <CustomHook/>
+        <ContextApi/>
+        {/* <CustomHook/> */}
         {/* <UseActionStateHook/> */}
         {/* <DerivedState/> */}
         {/* <PureComponents/> */}
