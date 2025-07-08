@@ -14,11 +14,13 @@ import DerivedState from "../features/DerivedState";
 import UseActionStateHook from "../features/UseActionStateHook";
 import CustomHook from "../features/CustomHook";
 import ContextApi from "../features/ContextApi";
+import Router from "../features/Router";
 
 export default function Main() {
   return(
     <>
-        <ContextApi/>
+        <Router/>
+        {/* <ContextApi/> */}
         {/* <CustomHook/> */}
         {/* <UseActionStateHook/> */}
         {/* <DerivedState/> */}
