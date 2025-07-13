@@ -18,6 +18,12 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 16px;
+}
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);

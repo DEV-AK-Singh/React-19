@@ -1,11 +1,47 @@
 {
   "posts": [
-    { "id": "1", "title": "a title", "views": 100 },
-    { "id": "2", "title": "another title", "views": 200 }
+    {
+      "title": "a title 1",
+      "body": "a body",
+      "views": 111,
+      "id": "1"
+    },
+    {
+      "id": "2",
+      "title": "another title",
+      "body": "another body",
+      "views": 201
+    },
+    {
+      "id": "5027",
+      "title": "title 3",
+      "body": "body 3",
+      "views": 15
+    },
+    {
+      "id": "de32",
+      "title": "Abhishek",
+      "body": "This is abhishek singh's post",
+      "views": 1
+    },
+    {
+      "id": "a99c",
+      "title": "Arvind",
+      "body": "This is arvi's post",
+      "views": 3
+    }
   ],
   "comments": [
-    { "id": "1", "text": "a comment about post 1", "postId": "1" },
-    { "id": "2", "text": "another comment about post 1", "postId": "1" }
+    {
+      "id": "1",
+      "text": "a comment about post 1",
+      "postId": "1"
+    },
+    {
+      "id": "2",
+      "text": "another comment about post 1",
+      "postId": "1"
+    }
   ],
   "profile": {
     "name": "typicode"
