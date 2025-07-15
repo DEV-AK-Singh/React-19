@@ -1,10 +1,14 @@
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import "./App.css";
 import TodoForm from "./components/TodoForm";
 import TodoItem from "./components/TodoItem";
 import useLocalStorage from "./hooks/useLocalStorage";
+import { ThemeContext } from "./contexts/ThemeContext";
+import ThemeToggler from "./components/ThemeToggler";
 
 function App() {
+  const { theme, toggleTheme } = useContext(ThemeContext);
+
   const initialTask = { task: "", description: "", date: "" };
   const [tasks, setTasks] = useLocalStorage("tasks", []);
   const [currentTask, setCurrentTask] = useState(initialTask);
@@ -35,21 +39,23 @@ function App() {
 
   return (
     <>
-      <div className="w-screen h-screen flex justify-center items-center">
-        <div className="w-full h-full flex justify-center items-center bg-black">
+      <div className="w-screen h-screen flex justify-center items-center"> 
+        <span className="absolute top-4 right-4"><ThemeToggler theme={theme} toggleTheme={toggleTheme}/></span>
+        <div className={`w-full h-full flex justify-center items-center ${theme == "light" ? "bg-black" : "bg-white"}`}>
           <div>
             <div className="flex justify-between items-center gap-2">
-              <h1 className="text-2xl font-light text-center text-white mb-1">
-                All Todos | {tasks.length} |
+              <h1 className={`text-2xl font-light text-center mb-1 ${theme == "light" ? "text-white" : "text-black"}`}>
+                All Todos
               </h1>
+              <p className={`border-l-2 border-r-2 border-gray-300 px-2 mx-2 ${theme == "light" ? "text-white" : "text-black"}`}>{tasks.length}</p>
               <button
                 onClick={() => setCurrentTask(initialTask)}
-                className="text-black bg-white rounded-2xl px-4 py-2 text-xs cursor-pointer hover:bg-gray-200"
+                className={`${theme == "light" ? "bg-black text-white hover:bg-gray-700 border border-white" : "bg-white text-black hover:bg-gray-200 border border-black"} rounded-2xl px-3 py-1 text-xs cursor-pointer`}
               >
                 Add Todo
               </button>
             </div>
-            <hr className="my-4 bg-white text-white" />
+            <hr className={`my-4 ${theme == "light" ? "bg-white text-white" : "bg-black text-black"}`} />
             <div className="max-h-[200px] overflow-y-auto">
               {tasks.length > 0 ? (
                 tasks.map((task, index) => (
@@ -68,7 +74,7 @@ function App() {
             </div>
           </div>
         </div>
-        <div className="w-full h-full flex justify-center items-center bg-white">
+        <div className={`w-full h-full flex justify-center items-center ${theme == "light" ? "bg-white" : "bg-black"}`}>
           <TodoForm saveTask={saveTask} currentTask={currentTask} />
         </div>
       </div>

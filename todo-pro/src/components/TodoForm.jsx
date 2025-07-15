@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useFormStatus } from "react-dom"; 
 import { nanoid } from "nanoid";
+import { ThemeContext } from "../contexts/ThemeContext";
 
 const SubmitButton = ({ title }) => {
   const { pending } = useFormStatus(); 
@@ -15,7 +16,8 @@ const SubmitButton = ({ title }) => {
   );
 };
 
-const InputBox = ({ type, label, val, setVal }) => {
+const InputBox = ({ type, label, val, setVal }) => { 
+  const { theme } = useContext(ThemeContext);
   return (
     <label htmlFor={label} className="mt-2 block"> 
       <input
@@ -25,13 +27,14 @@ const InputBox = ({ type, label, val, setVal }) => {
         id={label}
         name={label}
         placeholder={`Enter ${label}`}
-        className="mt-0.5 p-2 w-full rounded-2xl border-gray-300 shadow-sm sm:text-sm border-1"
+        className={`mt-0.5 p-2 w-full rounded-2xl border-gray-300 shadow-sm sm:text-sm border-1 placeholder:text-gray-400 ${theme == "dark" ? "text-white" : "text-black"}`}
       />
     </label>
   );
 };
 
-export default function TodoForm({ saveTask, currentTask }) { 
+export default function TodoForm({ saveTask, currentTask }) {
+  const { theme } = useContext(ThemeContext);
   const currentDate = new Date();
   const id = nanoid();
   const [task, setTask] = React.useState("");
@@ -46,7 +49,7 @@ export default function TodoForm({ saveTask, currentTask }) {
 
   return (
     <div className="w-sm m-5 border border-gray-300 p-4 rounded-2xl">
-      <h1 className="text-2xl font-light text-center">{currentTask.id ? "Update" : "Add"} Task</h1> 
+      <h1 className={`text-2xl font-light text-center ${theme === "dark" ? "text-white" : "text-black"}`}>{currentTask.id ? "Update" : "Add"} Task</h1> 
       <form action={ async ()=>{
         await saveTask(currentTask.id ? currentTask.id : id, task, description, date);
         setTask("");
