@@ -67,7 +67,7 @@ function App() {
                   />
                 ))
               ) : (
-                <h1 className="text-2xl font-light text-center text-white mb-1">
+                <h1 className={`text-2xl font-light text-center mb-1 ${theme == "light" ? "text-white" : "text-black"}`}>
                   No Todos
                 </h1>
               )}
