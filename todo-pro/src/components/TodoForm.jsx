@@ -1,24 +1,27 @@
 import React, { useContext, useEffect } from "react";
-import { useFormStatus } from "react-dom"; 
+import { useFormStatus } from "react-dom";
 import { ThemeContext } from "../contexts/ThemeContext";
 
-const SubmitButton = ({ title }) => {
-  const { pending } = useFormStatus(); 
+const Button = ({ title, type, disabled, action, theme }) => {
+  const { pending } = useFormStatus();
   return (
     <button
-      type="submit" 
-      disabled={pending}
-      className="mt-3 w-full rounded-2xl bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+      type={type}
+      disabled={disabled || pending}
+      onClick={action || null}
+      className={`mt-3 w-full rounded-2xl px-4 py-2 text-sm font-medium hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed border-2 border-black ${
+        theme == "dark" ? "bg-white text-black " : "bg-gray-500 text-white "
+      }`}
     >
       {pending ? "wait..." : title}
     </button>
   );
 };
 
-const InputBox = ({ type, label, val, setVal }) => { 
+const InputBox = ({ type, label, val, setVal }) => {
   const { theme } = useContext(ThemeContext);
   return (
-    <label htmlFor={label} className="mt-2 block"> 
+    <label htmlFor={label} className="mt-2 block">
       <input
         type={type}
         value={val}
@@ -26,18 +29,27 @@ const InputBox = ({ type, label, val, setVal }) => {
         id={label}
         name={label}
         placeholder={`Enter ${label}`}
-        className={`mt-0.5 p-2 w-full rounded-2xl border-gray-300 shadow-sm sm:text-sm border-1 placeholder:text-gray-400 ${theme == "dark" ? "text-white" : "text-black"}`}
+        className={`mt-0.5 p-2 w-full rounded-2xl border-gray-300 shadow-sm sm:text-sm border-1 placeholder:text-gray-400 ${
+          theme == "dark" ? "text-white" : "text-black"
+        }`}
       />
     </label>
   );
 };
 
-export default function TodoForm({ saveTask, currentTask, undo, undoAble, redo, redoAble }) {
+export default function TodoForm({
+  saveTask,
+  currentTask,
+  undo,
+  undoAble,
+  redo,
+  redoAble,
+}) {
   const { theme } = useContext(ThemeContext);
   const currentDate = new Date();
   const [task, setTask] = React.useState("");
   const [description, setDescription] = React.useState("");
-  const [date, setDate] = React.useState("");  
+  const [date, setDate] = React.useState("");
 
   useEffect(() => {
     setTask(currentTask.task);
@@ -47,30 +59,56 @@ export default function TodoForm({ saveTask, currentTask, undo, undoAble, redo, 
 
   return (
     <div className="w-sm m-5 border border-gray-300 p-4 rounded-2xl">
-      <h1 className={`text-2xl font-light text-center ${theme === "dark" ? "text-white" : "text-black"}`}>{currentTask.id ? "Update" : "Add"} Task</h1> 
-      <form action={ async ()=>{
-        await saveTask(currentTask.id ? currentTask.id : null, task, description, date);
-        setTask("");
-        setDescription("");
-        setDate(currentDate.toISOString().split("T")[0]);
-      }}>
+      <h1
+        className={`text-2xl font-light text-center ${
+          theme === "dark" ? "text-white" : "text-black"
+        }`}
+      >
+        {currentTask.id ? "Update" : "Add"} Task
+      </h1>
+      <form
+        action={async () => {
+          await saveTask(
+            currentTask.id ? currentTask.id : null,
+            task,
+            description,
+            date
+          );
+          setTask("");
+          setDescription("");
+          setDate(currentDate.toISOString().split("T")[0]);
+        }}
+      >
         <InputBox type="text" label="Task" val={task} setVal={setTask} />
-        <InputBox type="text" label="Description" val={description} setVal={setDescription}/>
+        <InputBox
+          type="text"
+          label="Description"
+          val={description}
+          setVal={setDescription}
+        />
         <InputBox type="date" label="Date" val={date} setVal={setDate} />
-        <SubmitButton title={currentTask.id ? "Update Task" : "Add Task"} /> 
+        <Button
+          title={currentTask.id ? "Update Task" : "Add Task"}
+          type="submit"
+          disabled={null}
+          action={null}
+          theme={"dark"}
+        />
         <div className="flex justify-between items-center gap-2">
-          <button 
-            type="button" 
-            className="mt-3 w-full rounded-2xl bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-            onClick={undo}
+          <Button
+            title={"Undo"}
+            type="button"
             disabled={!undoAble}
-          >Undo</button>
-          <button 
-            type="button" 
-            className="mt-3 w-full rounded-2xl bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-            onClick={redo}
+            action={undo}
+            theme={"dark"}
+          />
+          <Button
+            title={"Redo"}
+            type="button"
             disabled={!redoAble}
-          >Redo</button>
+            action={redo}
+            theme={"light"}
+          />
         </div>
       </form>
     </div>
