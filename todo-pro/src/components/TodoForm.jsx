@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from "react";
 import { useFormStatus } from "react-dom"; 
-import { nanoid } from "nanoid";
 import { ThemeContext } from "../contexts/ThemeContext";
 
 const SubmitButton = ({ title }) => {
@@ -33,10 +32,9 @@ const InputBox = ({ type, label, val, setVal }) => {
   );
 };
 
-export default function TodoForm({ saveTask, currentTask }) {
+export default function TodoForm({ saveTask, currentTask, undo, undoAble, redo, redoAble }) {
   const { theme } = useContext(ThemeContext);
   const currentDate = new Date();
-  const id = nanoid();
   const [task, setTask] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [date, setDate] = React.useState("");  
@@ -51,7 +49,7 @@ export default function TodoForm({ saveTask, currentTask }) {
     <div className="w-sm m-5 border border-gray-300 p-4 rounded-2xl">
       <h1 className={`text-2xl font-light text-center ${theme === "dark" ? "text-white" : "text-black"}`}>{currentTask.id ? "Update" : "Add"} Task</h1> 
       <form action={ async ()=>{
-        await saveTask(currentTask.id ? currentTask.id : id, task, description, date);
+        await saveTask(currentTask.id ? currentTask.id : null, task, description, date);
         setTask("");
         setDescription("");
         setDate(currentDate.toISOString().split("T")[0]);
@@ -59,7 +57,21 @@ export default function TodoForm({ saveTask, currentTask }) {
         <InputBox type="text" label="Task" val={task} setVal={setTask} />
         <InputBox type="text" label="Description" val={description} setVal={setDescription}/>
         <InputBox type="date" label="Date" val={date} setVal={setDate} />
-        <SubmitButton title={currentTask.id ? "Update Task" : "Add Task"} />
+        <SubmitButton title={currentTask.id ? "Update Task" : "Add Task"} /> 
+        <div className="flex justify-between items-center gap-2">
+          <button 
+            type="button" 
+            className="mt-3 w-full rounded-2xl bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={undo}
+            disabled={!undoAble}
+          >Undo</button>
+          <button 
+            type="button" 
+            className="mt-3 w-full rounded-2xl bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={redo}
+            disabled={!redoAble}
+          >Redo</button>
+        </div>
       </form>
     </div>
   );
