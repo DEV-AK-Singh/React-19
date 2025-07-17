@@ -1,32 +1,31 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import "./App.css";
-import TodoForm from "./components/TodoForm";
-import TodoItem from "./components/TodoItem";
+import TodoForm from "./components/TodoForm"; 
 import useLocalStorage from "./hooks/useLocalStorage";
 import { ThemeContext } from "./contexts/ThemeContext";
 import ThemeToggler from "./components/ThemeToggler";
 import { nanoid } from "nanoid";
-import DragDropList from "./components/DragDropList";
+import DragDropList from "./components/DragDropList"; 
 
 function App() {
   const { theme, toggleTheme } = useContext(ThemeContext);
 
-  const initialTask = { task: "", description: "", date: "" };
+  const initialTask = { task: "", description: "", date: "", isDone: false };
   const [tasks, setTasks] = useLocalStorage("tasks", []);
   const [currentTask, setCurrentTask] = useState(initialTask);
   const [history, setHistory] = useState([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
 
-  const saveTask = async (tid, task, description, date) => {
+  const saveTask = async (tid, task, description, date, isDone = false) => {
     if (task && description && date) {
       if (tid) {
-        const newData = { id: tid, task, description, date };
+        const newData = { id: tid, task, description, date, isDone };
         const oldData = tasks.find((task) => task.id === tid);
         setHistory([...history, { newData, oldData, type: "update" }]);
         setTasks(tasks.map((t) => (t.id === tid ? newData : t)));
       } else {
         const id = nanoid();
-        const data = { id, task, description, date };
+        const data = { id, task, description, date, isDone };
         setHistory([...history, { ...data, type: "save" }]);
         setTasks([...tasks, data]);
       }
@@ -47,6 +46,12 @@ function App() {
     setTasks(tasks.filter((task) => task.id !== id));
     setHistory([...history, { ...data, type: "delete" }]);
     setHistoryIndex(historyIndex + 1);
+  };
+
+  const handleIsDone = async (id) => {
+    setTasks(
+      tasks.map((task) => (task.id === id ? { ...task, isDone: !task.isDone } : task))
+    );
   };
 
   const undo = (historyIndex) => {
@@ -87,9 +92,10 @@ function App() {
       const task = oldData.task;
       const description = oldData.description;
       const date = oldData.date;
+      const isDone = oldData.isDone;
       editTask(id);
       setTasks(
-        tasks.map((t) => (t.id === id ? { id, task, description, date } : t))
+        tasks.map((t) => (t.id === id ? { id, task, description, date, isDone } : t))
       );
     } else if (data.type === "delete") {
       // console.log("undo delete", data);
@@ -97,7 +103,8 @@ function App() {
       const task = data.task;
       const description = data.description;
       const date = data.date;
-      setTasks([...tasks, { id, task, description, date }]);
+      const isDone = data.isDone;
+      setTasks([...tasks, { id, task, description, date, isDone }]);
     }
   };
 
@@ -108,7 +115,8 @@ function App() {
       const task = data.task;
       const description = data.description;
       const date = data.date;
-      setTasks([...tasks, { id, task, description, date }]);
+      const isDone = data.isDone; 
+      setTasks([...tasks, { id, task, description, date, isDone }]);
     } else if (data.type === "update") {
       // console.log("redo update", data);
       const newData = data.newData;
@@ -116,9 +124,10 @@ function App() {
       const task = newData.task;
       const description = newData.description;
       const date = newData.date;
+      const isDone = newData.isDone;
       setCurrentTask(initialTask);
       setTasks(
-        tasks.map((t) => (t.id === id ? { id, task, description, date } : t))
+        tasks.map((t) => (t.id === id ? { id, task, description, date, isDone } : t))
       );
     } else if (data.type === "delete") {
       // console.log("undo delete", data);
@@ -137,6 +146,20 @@ function App() {
     return true;
   };
 
+  const handleSorting = (type, tasks) => { 
+    const newOrd = [...tasks];
+    if (type === "latest") {
+      newOrd.sort((a, b) => new Date(b.date) - new Date(a.date));
+    } else if (type === "oldest") {
+      newOrd.sort((a, b) => new Date(a.date) - new Date(b.date));
+    } else if (type === "a-z") {
+      newOrd.sort((a, b) => a.task.localeCompare(b.task));
+    } else if (type === "z-a") {
+      newOrd.sort((a, b) => b.task.localeCompare(a.task));
+    }
+    setTasks(newOrd);
+  };  
+
   return (
     <>
       <div className="w-screen h-screen flex flex-col justify-center items-center sm:flex-row">
@@ -150,51 +173,61 @@ function App() {
         >
           <div>
             <div className="flex justify-between items-center gap-2">
-              <h1
-                className={`text-2xl font-light text-center mb-1 ${
-                  theme == "light" ? "text-white" : "text-black"
-                }`}
-              >
-                All Todos
-              </h1>
-              <p
-                className={`border-l-2 border-r-2 border-gray-300 px-2 mx-2 ${
-                  theme == "light" ? "text-white" : "text-black"
-                }`}
-              >
-                {tasks.length}
-              </p>
-              <button
-                onClick={() => setCurrentTask(initialTask)}
-                className={`${
-                  theme == "light"
-                    ? "bg-black text-white hover:bg-gray-700 border border-white"
-                    : "bg-white text-black hover:bg-gray-200 border border-black"
-                } rounded-2xl px-3 py-1 text-xs cursor-pointer`}
-              >
-                Add Todo
-              </button>
+              <div className="flex items-center gap-1">
+                <h1
+                  className={`text-2xl font-light text-center mb-1 ${
+                    theme == "light" ? "text-white" : "text-black"
+                  }`}
+                >
+                  All Todos
+                </h1>
+                <p
+                  className={`border-l-2 border-r-2 border-gray-300 px-2 mx-2 ${
+                    theme == "light" ? "text-white" : "text-black"
+                  }`}
+                >
+                  {tasks.length}
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setCurrentTask(initialTask)}
+                  className={`${
+                    theme == "light"
+                      ? "bg-black text-white hover:bg-gray-700 border border-white"
+                      : "bg-white text-black hover:bg-gray-200 border border-black"
+                  } rounded-2xl px-3 py-1 text-xs cursor-pointer`}
+                >
+                  Add Todo
+                </button>
+                <select
+                  onChange={(e) => handleSorting(e.target.value, tasks)}
+                  className={`${
+                    theme == "light"
+                      ? "bg-black text-white hover:bg-gray-700 border border-white"
+                      : "bg-white text-black hover:bg-gray-200 border border-black"
+                  } rounded-2xl px-3 py-1 text-xs cursor-pointer`}
+                > 
+                  <option value="latest">Latest</option>
+                  <option value="oldest">Oldest</option>
+                  <option value="a-z">A-Z</option>
+                  <option value="z-a">Z-A</option>
+                </select>
+              </div>
             </div>
             <hr
               className={`my-4 ${
                 theme == "light" ? "bg-white text-white" : "bg-black text-black"
               }`}
             />
-            <div className="max-h-[600px] overflow-y-auto">
-              {tasks.length > 0 ? (
-                // tasks.map((task, index) => (
-                //   <TodoItem
-                //     key={index}
-                //     task={task}
-                //     editTask={editTask}
-                //     deleteTask={deleteTask}
-                //   />
-                // ))
+            <div className="max-h-[200px] w-[400px] overflow-y-auto">
+              {tasks.length > 0 ? ( 
                 <DragDropList
                   items={tasks}
                   setItems={setTasks}
                   editTask={editTask}
                   deleteTask={deleteTask}
+                  handleIsDone={handleIsDone}
                 />
               ) : (
                 <h1
