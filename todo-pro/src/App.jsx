@@ -6,6 +6,7 @@ import useLocalStorage from "./hooks/useLocalStorage";
 import { ThemeContext } from "./contexts/ThemeContext";
 import ThemeToggler from "./components/ThemeToggler";
 import { nanoid } from "nanoid";
+import DragDropList from "./components/DragDropList";
 
 function App() {
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -80,14 +81,16 @@ function App() {
       const id = data.id;
       setTasks(tasks.filter((task) => task.id !== id));
     } else if (data.type === "update") {
-      // console.log("undo update", data);  
+      // console.log("undo update", data);
       const oldData = data.oldData;
-      const id = oldData.id;  
+      const id = oldData.id;
       const task = oldData.task;
       const description = oldData.description;
       const date = oldData.date;
       editTask(id);
-      setTasks(tasks.map((t) => (t.id === id ? { id, task, description, date } : t)));
+      setTasks(
+        tasks.map((t) => (t.id === id ? { id, task, description, date } : t))
+      );
     } else if (data.type === "delete") {
       // console.log("undo delete", data);
       const id = data.id;
@@ -107,14 +110,16 @@ function App() {
       const date = data.date;
       setTasks([...tasks, { id, task, description, date }]);
     } else if (data.type === "update") {
-      // console.log("redo update", data); 
+      // console.log("redo update", data);
       const newData = data.newData;
       const id = newData.id;
       const task = newData.task;
       const description = newData.description;
       const date = newData.date;
       setCurrentTask(initialTask);
-      setTasks(tasks.map((t) => (t.id === id ? { id, task, description, date } : t)));
+      setTasks(
+        tasks.map((t) => (t.id === id ? { id, task, description, date } : t))
+      );
     } else if (data.type === "delete") {
       // console.log("undo delete", data);
       const id = data.id;
@@ -175,16 +180,22 @@ function App() {
                 theme == "light" ? "bg-white text-white" : "bg-black text-black"
               }`}
             />
-            <div className="max-h-[200px] overflow-y-auto">
+            <div className="max-h-[600px] overflow-y-auto">
               {tasks.length > 0 ? (
-                tasks.map((task, index) => (
-                  <TodoItem
-                    key={index}
-                    task={task}
-                    editTask={editTask}
-                    deleteTask={deleteTask}
-                  />
-                ))
+                // tasks.map((task, index) => (
+                //   <TodoItem
+                //     key={index}
+                //     task={task}
+                //     editTask={editTask}
+                //     deleteTask={deleteTask}
+                //   />
+                // ))
+                <DragDropList
+                  items={tasks}
+                  setItems={setTasks}
+                  editTask={editTask}
+                  deleteTask={deleteTask}
+                />
               ) : (
                 <h1
                   className={`text-2xl font-light text-center mb-1 ${
