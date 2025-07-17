@@ -122,6 +122,16 @@ function App() {
     }
   };
 
+  const handleUndoAble = () => {
+    if (historyIndex === -1) return false;
+    return true;
+  };
+
+  const handleRedoAble = () => {
+    if (historyIndex === history.length - 1) return false;
+    return true;
+  };
+
   return (
     <>
       <div className="w-screen h-screen flex justify-center items-center">
@@ -196,9 +206,9 @@ function App() {
             saveTask={saveTask}
             currentTask={currentTask}
             undo={() => undo(historyIndex)}
-            undoAble={true}
+            undoAble={handleUndoAble()}
             redo={() => redo(historyIndex)}
-            redoAble={true}
+            redoAble={handleRedoAble()}
           />
         </div>
       </div>
