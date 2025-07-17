@@ -134,7 +134,7 @@ function App() {
 
   return (
     <>
-      <div className="w-screen h-screen flex justify-center items-center">
+      <div className="w-screen h-screen flex flex-col justify-center items-center sm:flex-row">
         <span className="absolute top-4 right-4">
           <ThemeToggler theme={theme} toggleTheme={toggleTheme} />
         </span>
